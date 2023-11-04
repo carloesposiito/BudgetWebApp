@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <!-- Bootstrap icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!-- Poppins font -->
+  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+  <!-- Logo icona -->
+  <link rel="icon" type="image/x-icon" href="img/logo.png">
+  <style>
+    * {
+      font-family: "Poppins";
+      color: white;
+    }
+
+    .hov {
+      color: white;
+    }
+
+    .hov:hover {
+      border-color: white;
+      color: white;
+      background-color: transparent;
+    }
+
+    .walletNameColumn {
+      width: 15%;
+    }
+
+    .modalWidth {
+      width: 85%;
+    }
+
+    .widIcon {
+      width: 7%;
+    }
+
+    .widText {
+      width: 85%;
+    }
+
+    .widValue {
+      width: 12%;
+    }
+
+    .widDate {
+      width: 5%
+    }
+
+    .btnbtn {
+      color: white;
+    }
+  </style>
+  <title>Budget</title>
+</head>
+
+<body class="bg-dark text-light" onload="createPage();">
+  <div class="container-fluid">
+
+    <!-- Navbar laterale -->
+    <nav class="navbar navbar-dark bg-dark mb-4">
+      <div class="container-fluid">
+
+        <a class="navbar-brand" href="https://grllzn.netsons.org/Budget/">
+          <img src="img/banner.png" alt="Budget" height="35" class="d-inline-block align-text-top">
+        </a>
+
+        <button class="btn btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="navbar">
+
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Menù</h5>
+            <button type="button" class="btn btn-sm" data-bs-dismiss="offcanvas" aria-label="Close">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+
+          <div id="navbar_content" class="offcanvas-body"></div>
+
+        </div>
+
+      </div>
+    </nav>
+
+    <div id="contents"></div>
+
+    <!-- Modale inserimento/modifica movimento -->
+    <div id="modal1" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modalWidth mx-auto">
+        <div class="modal-content bg-dark">
+
+          <div class="p-4">
+            <h1 id="modal_title" class="modal-title text-center fs-5 mb-3"></h1>
+            <form id="form1" method="POST" action="">
+              <input id="form1_id" type="hidden" name="form1_id">
+              <input id="form1_description" type="text" class="form-control mb-2" name="form1_description"
+                placeholder="Descrizione movimento" required>
+              <input id="form1_value" type="number" class="form-control mb-2" name="form1_value"
+                placeholder="Importo movimento" min="0" max="1000000" step=".01" required>
+              <input id="form1_date" type="date" class="form-control mb-3" name="form1_date" required>
+              <div class="form-check form-check-inline mb-3">
+                <input id="form1_radio1" class="form-check-input" value="0" type="radio" name="form1_type">
+                <label class="form-check-label mx-0" for="tipo">Entrata</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input id="form1_radio2" class="form-check-input" value="1" type="radio" name="form1_type" required>
+                <label class="form-check-label mx-0" for="tipo">Uscita</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input id="form1_radio3" class="form-check-input" value="2" type="radio" name="form1_type">
+                <label class="form-check-label mx-0" for="tipo">-</label>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <button id="form1_cancel" type="button" class="btn btn-secondary rounded-pill w-100"
+                    onclick="closeModal(this.value)">Annulla</button>
+                </div>
+                <div class="col">
+                  <button id="form1_confirm" type="button" class="btn btn-secondary rounded-pill w-100"
+                    onclick="setMovement(this.value)"></button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Modale modifica somma wallet -->
+    <div id="modal2" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modalWidth mx-auto">
+        <div class="modal-content bg-dark">
+
+          <div class="p-4">
+            <h1 id="modal2_title" class="modal-title fs-5 mb-3"></h1>
+            <form id="form2" method="POST" action="">
+              <input id="form2_amount" type="number" class="form-control mb-4" name="form2_amount"
+                placeholder="Importo conto" min="0" max="1000000" step=".01" required>
+              <input id="form2_id" name="form2_id" type="hidden">
+              <div class="row">
+                <div class="col">
+                  <button id="form2_cancel" type="button" class="btn btn-secondary rounded-pill w-100"
+                    onclick="closeModal2()">Annulla</button>
+                </div>
+                <div class="col">
+                  <button id="form2_confirm" type="button" class="btn btn-secondary rounded-pill w-100"
+                    onclick="editWalletAmount(this.value)">Modifica</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Modale inserimento wallet -->
+    <div id="modal3" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modalWidth mx-auto">
+        <div class="modal-content bg-dark">
+
+          <div class="p-4">
+            <h1 id="modal3_title" class="modal-title fs-5 mb-3">Crea nuovo conto</h1>
+            <form id="form3" method="POST" action="">
+              <input id="form3_name" type="text" class="form-control mb-4" name="form3_walletName"
+                placeholder="Nome conto" required>
+              <div class="row">
+                <div class="col">
+                  <button type="button" class="btn btn-secondary rounded-pill w-100"
+                    data-bs-dismiss="modal">Annulla</button>
+                </div>
+                <div class="col">
+                  <button id="form3_confirm" type="button" class="btn btn-secondary rounded-pill w-100"
+                    onclick="createWallet()">Crea</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Modale cancellazione wallet -->
+    <div id="modal4" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modalWidth mx-auto">
+        <div class="modal-content bg-dark">
+
+          <div class="p-4">
+            <h1 class="modal-title fs-5 mb-3">Vuoi davvero cancellare il conto?</h1>
+            <div class="row">
+              <form id="form4" method="POST" action="">
+                <input id="form4_walletId" name="form4_walletId" type="hidden">
+                <div class="row">
+                  <div class="col">
+                    <button type="button" class="btn btn-secondary rounded-pill w-100"
+                      data-bs-dismiss="modal">No</button>
+                  </div>
+                  <div class="col">
+                    <button id="form4_confirm" type="button" class="btn btn-danger rounded-pill w-100"
+                      onclick="deleteWallet()">Si</button>
+                  </div>
+
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script>
+
+      // La funzione popola la pagina
+      function createPage() {
+
+        document.getElementById("navbar_content").innerHTML = "";
+        document.getElementById("contents").innerHTML = "";
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'ajax.php', true);
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            info = JSON.parse(xhr.responseText);
+
+            // Crea la lista di wallet per la navbar
+            createWalletList(navbar_content, info.wallets);
+
+            // Creo il contenuto della pagina
+            createDivs(contents, info.wallets, info.movements);
+          }
+        };
+        xhr.send();
+      }
+
+    </script>
+
+    <script src="utils/functions.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"></script>
+
+</body>
+
+</html>
