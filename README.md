@@ -18,9 +18,9 @@ Wallets can be created, made visible and deleted through the controls in the nav
 The section where wallets are displayed shows their starting balance and all the movements related to that wallet. The starting balance can be modified if necessary and there is a button to insert new movements.
 
 
-![](https://github.com/carloesposiito/Budget/blob/main/GIFs/Creazione%20conto%2C%20modifica%20saldo%20(Resized).gif)
+![](https://github.com/carloesposiito/BudgetWebApp/blob/main/Screenshots/Creazione%20conto%2C%20modifica%20saldo%20(Resized).gif)
 
-![](https://github.com/carloesposiito/Budget/blob/main/GIFs/Mostra%2C%20nascondi%2C%20elimina%20conto%20(Resized).gif)
+![](https://github.com/carloesposiito/BudgetWebApp/blob/main/Screenshots/Mostra%2C%20nascondi%2C%20elimina%20conto%20(Resized).gif)
 
 
 # Movements
@@ -35,8 +35,8 @@ The total of income and outgoing is calculated at the end of the table and added
 Through the button present on each movement, it is possible to confirm the movement on the starting balance, cancel it or edit it.
 
 
-![](https://github.com/carloesposiito/Budget/blob/main/GIFs/Inserimento%20spesa%20(Resized).gif)
+![](https://github.com/carloesposiito/BudgetWebApp/blob/main/Screenshots/Inserimento%20spesa%20(Resized).gif)
 
-![](https://github.com/carloesposiito/Budget/blob/main/GIFs/Conferma%2C%20elimina%2C%20modifica%20movimento%20(Resized).gif)
+![](https://github.com/carloesposiito/BudgetWebApp/blob/main/Screenshots/Conferma%2C%20elimina%2C%20modifica%20movimento%20(Resized).gif)
 
 
